@@ -7,8 +7,8 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\\Users\\mayur\\AppData\\Local\\Prog
 custom_config = r'--oem 3 --psm 6'  # Tesseract configuration options
 
 
-def convert_text():
-	opening = cv2.imread('Images/preprocessed_img.jpg')
+def convert_text(img_path='Images/preprocessed_img.jpg'):
+	opening = cv2.imread(img_path)
 
     # Perform OCR on the grayscale frame
 	text = pytesseract.image_to_string(opening, config=custom_config)
