@@ -3,7 +3,8 @@ import cv2
 
 def preprocess_image():
     # Read the image
-    gray = cv2.imread('Images/gray.jpg', cv2.IMREAD_GRAYSCALE)
+    # gray = cv2.imread('Images/gray.jpg', cv2.IMREAD_GRAYSCALE)
+    gray = cv2.imread('Images/morph.jpg', cv2.IMREAD_GRAYSCALE)
 
     '''
     # Apply binary thresholding
@@ -27,3 +28,66 @@ def preprocess_image():
 
     cv2.imwrite('Images\\preprocessed_img.jpg', opening)
     cv2.imshow('Preprocessed img', opening)
+
+
+import cv2
+import numpy as np
+
+
+def img_prepreprocessing():
+	# Load the image
+	image = cv2.imread('Images/img.jpeg')
+	image = cv2.resize(image, (600, 600))
+
+	# Check if the image is loaded successfully
+	if image is None:
+	    print("Error: Could not read the image.")
+	else:
+	    # 1. Grayscale Conversion
+	    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+	    
+	    # 2. Gaussian Blurring
+	    blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
+	    
+	    # 3. Thresholding
+	    _, binary_image = cv2.threshold(blurred_image, 128, 255, cv2.THRESH_BINARY)
+	    
+	    # 4. Edge Detection
+	    edges = cv2.Canny(blurred_image, 100, 200)
+	    
+	    # 5. Dilation and Erosion
+	    kernel = np.ones((5, 5), np.uint8)
+	    dilated_image = cv2.dilate(binary_image, kernel, iterations=1)
+	    eroded_image = cv2.erode(dilated_image, kernel, iterations=1)
+	    
+	    # 6. Resizing
+	    resized_image = cv2.resize(eroded_image, (300, 300))
+	    
+	    # 7. Normalization
+	    # normalized_image = cv2.normalize(resized_image, None, 0, 255, cv2.NORM_MINMAX)
+	    normalized_image = cv2.normalize(edges, None, 0, 255, cv2.NORM_MINMAX)
+	    
+	    # 8. Histogram Equalization (for grayscale images)
+	    equalized_image = cv2.equalizeHist(gray_image)
+	    
+	    # Display the results
+	    # cv2.imshow('Original Image', image)
+	    # cv2.imshow('Grayscale Image', gray_image)
+	    # cv2.imshow('Blurred Image', blurred_image)
+	    # cv2.imshow('Binary Image', binary_image)
+	    # cv2.imshow('Edges', edges)
+	    # cv2.imshow('Dilated Image', dilated_image)
+	    # cv2.imshow('Eroded Image', eroded_image)
+	    # cv2.imshow('Resized Image', resized_image)
+	    cv2.imshow('Normalized Image', normalized_image)
+	    # cv2.imshow('Equalized Image', equalized_image)
+	    cv2.imwrite('edge.jpg', normalized_image)
+	    
+	    # Wait until a key is pressed
+	    cv2.waitKey(0)
+	    
+	    # Destroy all OpenCV windows
+	    cv2.destroyAllWindows()
+
+
+# img_prepreprocessing()
