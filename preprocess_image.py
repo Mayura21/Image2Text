@@ -1,10 +1,17 @@
 import cv2
+import numpy as np
 
 
-def preprocess_image():
+def preprocess_image(img_path='Images/gray.jpg'):
     # Read the image
-    # gray = cv2.imread('Images/gray.jpg', cv2.IMREAD_GRAYSCALE)
-    gray = cv2.imread('Images/morph.jpg', cv2.IMREAD_GRAYSCALE)
+    gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    # gray = cv2.imread('Images/morph.jpg', cv2.IMREAD_GRAYSCALE)
+
+    kernel_size=5
+    kernel = np.ones((kernel_size, kernel_size), np.uint8)
+    gray = cv2.morphologyEx(gray, cv2.MORPH_OPEN, kernel)
+    cv2.imwrite('Images/morph.jpg', gray)
+    cv2.imshow('Morph Image', gray)
 
     '''
     # Apply binary thresholding
