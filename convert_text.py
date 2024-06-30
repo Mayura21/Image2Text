@@ -14,5 +14,9 @@ def convert_text():
 	text = pytesseract.image_to_string(opening, config=custom_config)
 
 	print("Text:")
+	print()
 	print(text)
 	cv2.waitKey(0)
+
+
+# convert_text()
